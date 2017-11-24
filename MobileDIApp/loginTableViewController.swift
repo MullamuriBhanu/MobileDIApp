@@ -11,13 +11,13 @@ import UIKit
 class loginTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableViewData: UITableView!
+    var dataAray : [String] = []
     
     var dataDict : Dictionary = [String:String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//          self.parseJSONData(url: "http://jsonplaceholder.typicode.com/users/2")
         self.parseData(url:"https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/mealplans/generate")
 
     }
@@ -29,9 +29,9 @@ class loginTableViewController: UIViewController, UITableViewDataSource, UITable
         let url = NSURL(string: urlString)!
         let request = NSMutableURLRequest(url: url as URL)
         
-                
+        
         request.addValue("1a972fe35b106ab79056f8db64e9ef0a", forHTTPHeaderField: "X-Mashape-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
         
         session.dataTask(with: (request as NSMutableURLRequest) as URLRequest){(data, response, error) -> Void in
@@ -102,7 +102,7 @@ class loginTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 10
+        return dataAray.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -112,6 +112,8 @@ class loginTableViewController: UIViewController, UITableViewDataSource, UITable
         if cell == nil{
             
             cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
+            
+            cell?.textLabel?.text = dataAray[indexPath.row]
             
         }
         
